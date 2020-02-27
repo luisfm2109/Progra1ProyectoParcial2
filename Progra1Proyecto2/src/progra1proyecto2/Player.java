@@ -8,6 +8,7 @@ public class Player {
     
     String jugador;
     String contraseña;
+    int conteo;
     
     static void CrearJugador(){
         

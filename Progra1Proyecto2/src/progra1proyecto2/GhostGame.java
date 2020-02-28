@@ -15,19 +15,63 @@ public class GhostGame {
     static void TableroInicial(){
         for(int fila=0;fila<6;fila++){
             for(int columna=0;columna<6;columna++){
-                if(columna==0 || columna==5 || (fila==2 || fila==3)){
-                    System.out.print("[]");
+                if(dificultad.equals("NORMAL")){
+                    Normal(fila,columna);
+                }else if(dificultad.equals("EXPERT")){
+                    Expert(fila,columna);
                 }else{
-                    if(fila<=1){
-                        System.out.print("F2");
-                    }else if(fila>=4){
-                        System.out.print("F1");
-                    }
-                
+                    Genius(fila,columna);
                 }
+            }
+        }
+        ImprimirTablero();
+    }
+    
+    static void ImprimirTablero(){
+        for(int fila=0;fila<6;fila++){
+            for(int columna=0;columna<6;columna++){
+               System.out.print(tablero[fila][columna]);
             }
             System.out.print("\n");
         }
+    }
+    static void Normal(int fila, int columna){
+        if(columna==0 || columna==5 || (fila==2 || fila==3)){
+                    tablero[fila][columna] ="[]";
+                }else{
+                    if(fila<=1){
+                        tablero[fila][columna] ="F2";
+                    }else if(fila>=4){
+                        tablero[fila][columna] ="F1";
+                    }
+                
+                }
+    }
+    
+    static void Expert(int fila, int columna){
+        if(columna==0 || columna==5 || (fila>=1 && fila<=4)){
+                    tablero[fila][columna] ="[]";
+                }else{
+                    if(fila<1){
+                        tablero[fila][columna] ="F2";
+                    }else if(fila>4){
+                        tablero[fila][columna] ="F1";
+                    }
+                
+                }
+    }
+    
+    static void Genius(int fila, int columna){
+        if(columna<=1 || columna>=4 || (fila>=1 && fila<=4)){
+                    tablero[fila][columna] ="[]";
+                }else{
+                    if(fila<1){
+                        tablero[fila][columna] ="F2";
+                    }else if(fila>4){
+                        tablero[fila][columna] ="F1";
+                    }
+                
+                }
     }
     static void Dificultad(){
         do{

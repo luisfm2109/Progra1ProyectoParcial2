@@ -19,7 +19,7 @@ public class Progra1Proyecto2 {
             System.out.println("1. Jugar Ghosts\n2. Configuracion\n3. Reportes\n4. Mi Perfil\n5. Cerrar sesion");
             menuprincipal = lea.nextInt();
             switch(menuprincipal){
-                case 1: 
+                case 1: GhostGame.TableroInicial();
                     break;
                 case 2: GhostGame.Configuracion();
                     break;

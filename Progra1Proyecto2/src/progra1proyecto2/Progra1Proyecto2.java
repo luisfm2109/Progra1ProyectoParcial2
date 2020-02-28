@@ -35,14 +35,42 @@ public class Progra1Proyecto2 {
     
     public static void main(String[] args) {
        int menudeinicio = 0;
-       
+       Player jugadores[] = new Player[50];
+       for(int i=0;i<jugadores.length;i++){
+           jugadores[i] = new Player("","");
+       }
+       String username;
+       String contraseña;
        do{
        System.out.println("1. Login\n2. Crear Player\n3. Salir");
        menudeinicio = lea.nextInt();
        switch(menudeinicio){
            case 1: MenuLogin();
                break;
-           case 2:
+           case 2: loop: do{
+                   System.out.println("Ingresar username");
+                   username = lea.next();
+                   for(int i=0;i<jugadores.length;i++){
+                       
+                       if(username.equals(jugadores[i].jugador)){
+                        System.out.println("Username ya existe, intente de nuevo");
+                        break;
+                       }
+                       if(i==jugadores.length-1){
+                           for(int j=0;j<jugadores.length;j++){
+                               if(jugadores[j].jugador.equals("")){
+                                   
+                                   System.out.println("Ingresar contraseña:");
+                                   contraseña = lea.next();
+                                   jugadores[j]= new Player(username,contraseña);
+                                   break;
+                               }
+                           }
+                           break loop;
+                       }
+                    }
+                   
+                    }while(true);
                break;
            case 3:break;
            default: System.out.println("Opcion no valida");

@@ -12,9 +12,9 @@ public class Player {
     String contraseña;
     
     
-    static void CrearJugador(){
-        
-
+    Player(String jugador, String contraseña){
+        this.jugador = jugador;
+        this.contraseña = contraseña;
     }
     
     static void IniciarSesion(){

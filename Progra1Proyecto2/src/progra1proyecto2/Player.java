@@ -10,7 +10,7 @@ public class Player {
     
     String jugador;
     String contraseña;
-    
+    int conteo;
     
     Player(String jugador, String contraseña){
         this.jugador = jugador;

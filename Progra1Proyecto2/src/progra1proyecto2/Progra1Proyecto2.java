@@ -12,9 +12,9 @@ static Scanner leer = new Scanner(System.in);
     static Players jugador= new Players(nombre, contrasenia);
     
     public static void MenuPrincipal(){
-        
+       //juego.buscar(nombre).cualquiercosa
         int opcion=0;
-        
+       
         do{
           if (!jugador.nombre.equals("")){
             System.out.print("\n1.Jugar Ghost\n2. Configuración\n3. Reportes\n4. Mi Perfil\n5. Salir\nIngrese opción: ");
@@ -143,8 +143,8 @@ static Scanner leer = new Scanner(System.in);
                     if(juego.buscar2(username, password)){ //En caso de que exista, buscar devuelve los jugadores existentes (no es vacío)
                         
                         System.out.println("\n\n***Menú principal***\n");
-                        jugador.setNombre(username);
-                        jugador.setContrasenia(password);
+                        //jugador.setNombre(username);
+                        //jugador.setContrasenia(password);
                         Progra1Proyecto2.MenuPrincipal();
                     }
                     else //En el caso de que BUSCAR devuelva vacío, no existe tal jugador en arreglo de jugadores

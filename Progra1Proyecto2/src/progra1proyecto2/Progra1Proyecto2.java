@@ -1,83 +1,145 @@
 
 package progra1proyecto2;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 public class Progra1Proyecto2 {
-/*
-    NOTA: SE UTILIZA LA VARIABLE "lea" PARA EL SCANNER
-    */
-    static Scanner lea = new Scanner(System.in);
+static Scanner leer = new Scanner(System.in);
     
-    /* 
-        Menu Principal
-        Se accesa este menu por medio del menu de incio opcion 1
-    */
-    public static void MenuLogin(){
-        int menuprincipal=0;
+    //Instanciando la clase GhostGame
+    static GhostGame juego=new GhostGame();
+    static String nombre="", contrasenia="";
+    static Players jugador= new Players(nombre, contrasenia);
+    
+    public static void MenuPrincipal(){
         
-       do{
-            System.out.println("1. Jugar Ghosts\n2. Configuracion\n3. Reportes\n4. Mi Perfil\n5. Cerrar sesion");
-            menuprincipal = lea.nextInt();
-            switch(menuprincipal){
-                case 1: GhostGame.TableroInicial();
-                    break;
-                case 2: GhostGame.Configuracion();
-                    break;
-                case 3: Player.Reportes();
-                    break;
-                case 4: Player.MenuMiPerfil();
-                    break;
-                case 5: break;
-                default: System.out.println("Opcion no valida");
-                                }
-       }while(menuprincipal!=5);
+        int opcion;
+        do{
+            System.out.print("\n1.Jugar Ghost\n2. Configuración\n3. Reportes\n4. Mi Perfil\n5. Salir\nIngrese opción: ");
+            opcion = leer.nextInt();
+            String nombre2;
+            switch (opcion){
+                case 1:
+                    System.out.print("***Jugar Ghost***\nIngrese nombre del jugador 2: ");
+                    nombre2 = leer.next();
+                    if(juego.buscar(nombre2)!=null && !jugador.nombre.equalsIgnoreCase(nombre2)){
+                        System.out.println("\nTablero");
+                        System.out.println("\nJugador 1 es: " + jugador.nombre + "\tJugador 2 es: " + juego.jugador2(nombre2));
+                    }
+                    else
+                        System.out.println("\nJugador ingresado no es válido");
+                    GhostGame.Jugar(jugador.nombre,juego.jugador2(nombre2));
+                break;
+                case 2:
+                    char submenu2;
+                    do {
+                    System.out.print("\n***Configuración***\na. Dificultad\nb. Modo de Juego\nc. Regresar al Menú Principal\nIngrese opción: ");
+                    submenu2 = leer.next().toUpperCase().charAt(0);
+                    switch (submenu2){
+                        case 'A':
+                            GhostGame.Dificultad();
+                        break;
+                        case 'B':
+                            GhostGame.MododeJuego();
+                        break;
+                        case 'C':
+                        break;
+                    }
+                    } while(submenu2!='C');
+                break;
+                case 3:
+                    char submenu3;
+                    do {
+                    System.out.print("\n***Reportes***\na. Descripción de mis últimos 10 juegos\nb. Ranking de Jugadores\nc. Regresar al Menú Principal\nIngrese opción: ");
+                    submenu3 = leer.next().toUpperCase().charAt(0);
+                    switch (submenu3){
+                        case 'A':
+                            System.out.println("\n***Descripción de mis últimos 10 juegos***");
+                        break;
+                        case 'B':
+                            System.out.println("\n***Ranking de jugadores");
+                            juego.RankingJugadores();
+                        break;
+                        case 'C':
+                        break;
+                    }
+                    } while (submenu3!='C');
+                break;
+                case 4:
+                    char submenu4;
+                    do {
+                    System.out.print("\n***Mi Perfil***\na. Ver mis Datos\nb. Modificiar mi datos\nc.Eliminar mi cuenta\nd. Regresar al Menú Principal\nIngrese opción: ");
+                    submenu4 = leer.next().toUpperCase().charAt(0);
+                    switch (submenu4){
+                        case 'A':
+                            System.out.println("\n***Ver mis Datos***\nMi nombre: " + jugador.getNombre(nombre) + "\nMi contraseña: " + 
+                                    jugador.getContrasenia(contrasenia) );
+                        break;
+                        case 'B':
+                        break;
+                        case 'C':
+                        break;
+                        case 'D':
+                        break;
+                    }
+                    } while (submenu4!='D');
+                break;
+                case 5:
+                    //Salir
+                break;
+            }
+        } while (opcion!=5);
     }
     
     public static void main(String[] args) {
-       int menudeinicio = 0;
-       Player jugadores[] = new Player[50];
-       for(int i=0;i<jugadores.length;i++){
-           jugadores[i] = new Player("","");
-       }
-       String username;
-       String contraseña;
-       do{
-       System.out.println("1. Login\n2. Crear Player\n3. Salir");
-       menudeinicio = lea.nextInt();
-       switch(menudeinicio){
-           case 1: MenuLogin();
-               break;
-           case 2: loop: do{
-                   System.out.println("Ingresar username");
-                   username = lea.next();
-                   for(int i=0;i<jugadores.length;i++){
-                       
-                       if(username.equals(jugadores[i].jugador)){
-                        System.out.println("Username ya existe, intente de nuevo");
-                        break;
-                       }
-                       if(i==jugadores.length-1){
-                           for(int j=0;j<jugadores.length;j++){
-                               if(jugadores[j].jugador.equals("")){
-                                   
-                                   System.out.println("Ingresar contraseña:");
-                                   contraseña = lea.next();
-                                   jugadores[j]= new Player(username,contraseña);
-                                   break;
-                               }
-                           }
-                           break loop;
-                       }
+        //Declaración de variables       
+        int opcion;
+        String username="", password="";
+        //Instanciando la clase Players
+       JOptionPane.showMessageDialog(null, "Bienvenido");
+        
+        
+        do{
+            System.out.print("\n\tMENU DE INICIO\n1. Login\n2. Crear Player\n3. Salir\nOpción a elegir: ");
+            opcion = leer.nextInt();
+            switch(opcion){
+                case 1:
+                    System.out.println("\n***LOGIN***");
+                    System.out.print("Ingrese usuario: ");
+                    username = leer.next();
+                    System.out.print("Ingrese contraseña: ");
+                    password = leer.next();
+                    //Se utiliza la función BUSCAR de la clase GhostGame para verificar que exista el usuario ingresado
+                    if(juego.buscar2(username, password)){ //En caso de que exista, buscar devuelve los jugadores existentes (no es vacío)
+                        
+                        System.out.println("\n\n***Menú principal***\n");
+                        jugador.setNombre(username);
+                        jugador.setContrasenia(password);
+                        Progra1Proyecto2.MenuPrincipal();
                     }
-                   
-                    }while(true);
-               break;
-           case 3:break;
-           default: System.out.println("Opcion no valida");
-       }
-       }while(menudeinicio!=3);
-       
-       
+                    else //En el caso de que BUSCAR devuelva vacío, no existe tal jugador en arreglo de jugadores
+                        System.out.println("Usuario o contraseña incorrecta");
+                break;
+                case 2:
+                    System.out.print("***CREAR PLAYER***\nCrear usuario del jugador: ");
+                    nombre = leer.next();
+                    System.out.print("Ingrese contraseña: ");
+                    contrasenia = leer.next();
+                    //Se utiliza la función BUSCAR de la clase GhostGame para validar que no se repita el nombre de usuario más de una vez
+                    juego.buscar(nombre);
+                    if (juego.crearPlayer(nombre, contrasenia)){ //En el caso de que BUSCAR devolviera vacío, la función CREARPLAYER es verdadera
+                        System.out.println("Se ha creado el jugador\n\n***Menú Principal***\n");
+                        jugador.setNombre(nombre); 
+                        jugador.setContrasenia(contrasenia);
+                        Progra1Proyecto2.MenuPrincipal();
+                    }
+                    else //En el caso de que BUSCAR haya devuelto valores existentes, el usuario ingresado ya existe
+                        System.out.println("Jugador ya existe");
+                    
+                break;
+            }
+        
+        } while (opcion!=3);
     }
     
 }

@@ -56,6 +56,15 @@ public class GhostGame {
         return false;
     }
     
+    public void eliminarPlayer(String username){
+        for (int posicion=0; posicion<jugadores.length;posicion++){
+            if (jugadores[posicion]!=null && jugadores[posicion].nombre==username){
+                jugadores[posicion].nombre="";
+                jugadores[posicion].contrasenia="";
+            }
+        }
+    }
+    
     //Jugador 1
     public String jugador1 (String username){
         for (Players jugadorF: jugadores){

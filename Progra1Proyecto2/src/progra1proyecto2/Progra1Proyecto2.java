@@ -13,8 +13,10 @@ static Scanner leer = new Scanner(System.in);
     
     public static void MenuPrincipal(){
         
-        int opcion;
+        int opcion=0;
+        
         do{
+          if (!jugador.nombre.equals("")){
             System.out.print("\n1.Jugar Ghost\n2. Configuración\n3. Reportes\n4. Mi Perfil\n5. Salir\nIngrese opción: ");
             opcion = leer.nextInt();
             String nombre2;
@@ -22,13 +24,15 @@ static Scanner leer = new Scanner(System.in);
                 case 1:
                     System.out.print("***Jugar Ghost***\nIngrese nombre del jugador 2: ");
                     nombre2 = leer.next();
-                    if(juego.buscar(nombre2)!=null && !jugador.nombre.equalsIgnoreCase(nombre2)){
-                        System.out.println("\nTablero");
-                        System.out.println("\nJugador 1 es: " + jugador.nombre + "\tJugador 2 es: " + juego.jugador2(nombre2));
-                    }
-                    else
-                        System.out.println("\nJugador ingresado no es válido");
-                    GhostGame.Jugar(jugador.nombre,juego.jugador2(nombre2));
+
+                        if(juego.buscar(nombre2)!=null && !jugador.nombre.equalsIgnoreCase(nombre2)){
+                            System.out.println("\nTablero");
+                            System.out.println("\nJugador 1 es: " + jugador.nombre + "\tJugador 2 es: " + juego.jugador2(nombre2));
+                            GhostGame.Jugar(jugador.nombre,juego.jugador2(nombre2));
+                        }
+                        else
+                            System.out.println("\nJugador ingresado no es válido");
+
                 break;
                 case 2:
                     char submenu2;
@@ -76,8 +80,27 @@ static Scanner leer = new Scanner(System.in);
                                     jugador.getContrasenia(contrasenia) );
                         break;
                         case 'B':
+                            System.out.print("\n***Modificar mis datos\na. Modificar usuario\nb. Modificar contraseña\nIngrese opción: ");
+                            char modificarDatos = leer.next().toUpperCase().charAt(0);
+                            switch (modificarDatos){
+                                case 'A':
+                                    System.out.print("Nuevo nombre: ");
+                                    jugador.setNombre(leer.next());
+                                break;
+                                case 'B':
+                                    System.out.print("Nueva contraseña: ");
+                                    jugador.setContrasenia(leer.next());
+                                break;
+                            }
                         break;
                         case 'C':
+                            System.out.print("\n***Eliminar mi cuenta***\n¿Desea eliminar su cuenta actual?\n1. Sí\n2. No\nIngrese opción: ");
+                            int eliminar=leer.nextInt();
+                            if (eliminar==1){
+                                juego.eliminarPlayer(nombre);
+                                jugador.setNombre("");
+                                jugador.setContrasenia("");
+                            }
                         break;
                         case 'D':
                         break;
@@ -88,7 +111,14 @@ static Scanner leer = new Scanner(System.in);
                     //Salir
                 break;
             }
+            }
+          else{
+            System.out.println("\nSe ha eliminado su jugador, intente ingresar con otro o crear uno nuevo");
+            break;
+          }
         } while (opcion!=5);
+        
+        
     }
     
     public static void main(String[] args) {

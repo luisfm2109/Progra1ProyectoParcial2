@@ -24,7 +24,7 @@ public class GhostGame {
     public Players buscar (String username){
         for (Players jugadorF: jugadores) { //En caso de que ya exista dicho usuario en el arreglo de jugadores
             if ( jugadorF!=null && jugadorF.nombre.equalsIgnoreCase(username))
-                return jugadorF;
+                return jugadorF;    
         }
         //En caso de que no esté dentro de la colección de jugadores
         return null;
@@ -167,7 +167,7 @@ public class GhostGame {
                 }
             }while(columna<0 || columna>5 || columna>columnapieza+1 || columna<columnapieza-1);
             
-            if(tablero[fila][columna].equals(jugador) || (fila==0 && columna==0) || (fila==0 && columna==5) || (fila==5 && columna==0) || (fila==5 && columna==5) || (fila!=filapieza && columna!=columnapieza)){
+            if(tablero[fila][columna].equals(jugador) || (fila==0 && columna==0 && jugador.equals("F2")) || (fila==0 && columna==5 && jugador.equals("F2")) || (fila==5 && columna==0 && jugador.equals("F1")) || (fila==5 && columna==5 && jugador.equals("F1")) || (fila!=filapieza && columna!=columnapieza)){
                 System.out.println("Movimiento invalido");
                 do{
                 System.out.println("1. Ingresar otra cooordenada de movimiento\n2. Seleccionar otro fantasma");

@@ -12,6 +12,7 @@ public class GhostGame {
     static Scanner leer = new Scanner(System.in);
     public Players jugadores[];
     static String tablero[][] = new String[6][6];
+    static Piezas tablero2[][] = new Piezas[6][6];
     static String dificultad = "NORMAL";
     static String modojuego = "ALEATORIO";
     //Constructor
@@ -108,7 +109,7 @@ public class GhostGame {
             }
             if(!ElegirPieza(jugadoractual))
                 continue;
-            ImprimirTablero();
+            ImprimirTablero2();
             turno++;
         }while(true);
     }
@@ -134,13 +135,13 @@ public class GhostGame {
           System.out.println("Columna fuera de rango");  
         }
             }while(columna<0 || columna>5);
-        if(tablero[fila][columna].equals("[]")){
+        if(tablero2[fila][columna].jugador.equals("[]")){
            System.out.println("Espacio vacio"); 
-        }else if(!tablero[fila][columna].equals(jugador)){
+        }else if(!tablero2[fila][columna].jugador.equals(jugador)){
             System.out.println("Pieza del jugador contrario");
         }
        
-        }while(!tablero[fila][columna].equals(jugador));
+        }while(!tablero2[fila][columna].jugador.equals(jugador));
         
         return MoverPieza(jugador,fila,columna);
     }
@@ -167,7 +168,7 @@ public class GhostGame {
                 }
             }while(columna<0 || columna>5 || columna>columnapieza+1 || columna<columnapieza-1);
             
-            if(tablero[fila][columna].equals(jugador) || (fila==0 && columna==0 && jugador.equals("F2")) || (fila==0 && columna==5 && jugador.equals("F2")) || (fila==5 && columna==0 && jugador.equals("F1")) || (fila==5 && columna==5 && jugador.equals("F1")) || (fila!=filapieza && columna!=columnapieza)){
+            if(tablero2[fila][columna].jugador.equals(jugador) || (fila==0 && columna==0 && tablero2[fila][columna].jugador.equals("F2")) || (fila==0 && columna==5 && tablero2[fila][columna].jugador.equals("F2")) || (fila==5 && columna==0 && tablero2[fila][columna].jugador.equals("F1")) || (fila==5 && columna==5 && tablero2[fila][columna].jugador.equals("F1")) || (fila!=filapieza && columna!=columnapieza)){
                 System.out.println("Movimiento invalido");
                 do{
                 System.out.println("1. Ingresar otra cooordenada de movimiento\n2. Seleccionar otro fantasma");
@@ -181,27 +182,36 @@ public class GhostGame {
             }
             break;
         }while(true);
-        if(!tablero[fila][columna].equals("[]")){
-            System.out.println("Te comiste una pieza del jugador contrario!");
+        if(!tablero2[fila][columna].jugador.equals("[]")){
+            if(tablero2[fila][columna].fantasmabueno){
+            System.out.println("TE HAS COMIDO UN FANTASMA BUENO DEL JUGADOR CONTRARIO");
+            }else{
+                System.out.println("TE HAS COMIDO UN FANTASMA MALO DEL JUGADOR CONTRARIO");
+            }
         }
-        tablero[fila][columna]=jugador;
-        tablero[filapieza][columnapieza]="[]";
+        tablero2[fila][columna].jugador= tablero2[filapieza][columnapieza].jugador;
+        tablero2[fila][columna].fantasmabueno= tablero2[filapieza][columnapieza].fantasmabueno;
+        tablero2[filapieza][columnapieza].jugador="[]";
+        tablero2[filapieza][columnapieza].fantasmabueno=false;
         return true;
     }
     
     static void TableroInicial(){
+        
         for(int fila=0;fila<6;fila++){
             for(int columna=0;columna<6;columna++){
-                if(dificultad.equals("NORMAL")){
-                    Normal(fila,columna);
-                }else if(dificultad.equals("EXPERT")){
-                    Expert(fila,columna);
-                }else{
-                    Genius(fila,columna);
-                }
+                tablero[fila][columna]="[]";
+                tablero2[fila][columna]=new Piezas("[]",false);
             }
         }
         ImprimirTablero();
+        if(dificultad.equals("NORMAL")){
+            Normal();
+        }else if(dificultad.equals("EXPERT")){
+            Expert();
+        }else{
+            Genius();
+        }
     }
     
     static void ImprimirTablero(){
@@ -214,44 +224,219 @@ public class GhostGame {
             System.out.print("\n");
         }
     }
-    static void Normal(int fila, int columna){
-        if(columna==0 || columna==5 || (fila==2 || fila==3)){
-                    tablero[fila][columna] ="[]";
-                }else{
-                    if(fila<=1){
-                        tablero[fila][columna] ="F2";
-                    }else if(fila>=4){
-                        tablero[fila][columna] ="F1";
-                    }
-                
-                }
+    
+    static void ImprimirTablero2(){
+        System.out.println("  1 2 3 4 5 6");
+        for(int fila=0;fila<6;fila++){
+            System.out.print((fila+1)+" ");
+            for(int columna=0;columna<6;columna++){
+               System.out.print(tablero2[fila][columna].jugador);
+            }
+            System.out.print("\n");
+        }
     }
     
-    static void Expert(int fila, int columna){
-        if(columna==0 || columna==5 || (fila>=1 && fila<=4)){
-                    tablero[fila][columna] ="[]";
-                }else{
-                    if(fila<1){
-                        tablero[fila][columna] ="F2";
-                    }else if(fila>4){
-                        tablero[fila][columna] ="F1";
-                    }
-                
+    static void Normal(){
+        String jugador="F1";
+        int fila;
+        int columna;
+        System.out.println("Jugador 1");
+        for(int i =1;i<=8;i++){
+            do{
+            if(i%2==1){
+                System.out.println("Donde quiere el fantasma bueno?");
+            }else{
+                System.out.println("Donde quiere el fantasma malo?");
+            }
+            System.out.print("Fila: ");
+            fila=leer.nextInt()-1;
+            System.out.print("Columna: ");
+            columna=leer.nextInt()-1;
+            if((fila<4) || (columna==0 || columna==5) || tablero2[fila][columna].jugador.equals(jugador)){
+                System.out.println("Posicion invalida");
+                continue;
+            }
+            break;
+            }while(true);
+            if(i%2==1){
+            tablero2[fila][columna].jugador="F1";
+            tablero2[fila][columna].fantasmabueno=true;
+            }else{
+                tablero2[fila][columna].jugador="F1";
+            tablero2[fila][columna].fantasmabueno=false;
+            }
+            ImprimirTablero2();
+        }
+        
+        jugador="F2";
+        System.out.println("Jugador 2");
+        for(int i =1;i<=8;i++){
+            do{
+            if(i%2==1){
+                System.out.println("Donde quiere el fantasma bueno?");
+            }else{
+                System.out.println("Donde quiere el fantasma malo?");
+            }
+            System.out.print("Fila: ");
+            fila=leer.nextInt()-1;
+            System.out.print("Columna: ");
+            columna=leer.nextInt()-1;
+            if((fila>1) || (columna==0 || columna==5) || tablero2[fila][columna].jugador.equals(jugador)){
+                System.out.println("Posicion invalida");
+                continue;
+            }
+            break;
+            }while(true);
+            if(i%2==1){
+            tablero2[fila][columna]=new Piezas(jugador,true);
+            }else{
+                tablero2[fila][columna]=new Piezas(jugador,false);
+            }
+            ImprimirTablero2();
+        }
+        
+        for(int i=0;i<6;i++){
+            for(int j=0;i<6;i++){
+                if(tablero2[i][j]==null){
+                    tablero2[i][j]=new Piezas("[]",false);
                 }
+            }
+        }
+        
     }
     
-    static void Genius(int fila, int columna){
-        if(columna<=1 || columna>=4 || (fila>=1 && fila<=4)){
-                    tablero[fila][columna] ="[]";
-                }else{
-                    if(fila<1){
-                        tablero[fila][columna] ="F2";
-                    }else if(fila>4){
-                        tablero[fila][columna] ="F1";
-                    }
-                
+    static void Expert(){
+        String jugador="F1";
+        int fila;
+        int columna;
+        System.out.println("Jugador 1");
+        for(int i =1;i<=4;i++){
+            do{
+            if(i%2==1){
+                System.out.println("Donde quiere el fantasma bueno?");
+            }else{
+                System.out.println("Donde quiere el fantasma malo?");
+            }
+            System.out.print("Fila: ");
+            fila=leer.nextInt()-1;
+            System.out.print("Columna: ");
+            columna=leer.nextInt()-1;
+            if((fila<4) || (columna==0 || columna==5) || tablero2[fila][columna].jugador.equals(jugador)){
+                System.out.println("Posicion invalida");
+                continue;
+            }
+            break;
+            }while(true);
+            if(i%2==1){
+            tablero2[fila][columna]=new Piezas(jugador,true);
+            }else{
+                tablero2[fila][columna]=new Piezas(jugador,false);
+            }
+            ImprimirTablero2();
+        }
+        
+        jugador="F2";
+        System.out.println("Jugador 2");
+        for(int i =1;i<=4;i++){
+            do{
+            if(i%2==1){
+                System.out.println("Donde quiere el fantasma bueno?");
+            }else{
+                System.out.println("Donde quiere el fantasma malo?");
+            }
+            System.out.print("Fila: ");
+            fila=leer.nextInt()-1;
+            System.out.print("Columna: ");
+            columna=leer.nextInt()-1;
+            if((fila>1) || (columna==0 || columna==5) || tablero2[fila][columna].jugador.equals(jugador)){
+                System.out.println("Posicion invalida");
+                continue;
+            }
+            break;
+            }while(true);
+            if(i%2==1){
+            tablero2[fila][columna]=new Piezas(jugador,true);
+            }else{
+                tablero2[fila][columna]=new Piezas(jugador,false);
+            }
+            ImprimirTablero2();
+        }
+        
+        for(int i=0;i<6;i++){
+            for(int j=0;i<6;i++){
+                if(tablero2[i][j]==null){
+                    tablero2[i][j]=new Piezas("[]",false);
                 }
+            }
+        }
     }
+    
+    static void Genius(){
+        String jugador="F1";
+        int fila;
+        int columna;
+        System.out.println("Jugador 1");
+        for(int i =1;i<=2;i++){
+            do{
+            if(i%2==1){
+                System.out.println("Donde quiere el fantasma bueno?");
+            }else{
+                System.out.println("Donde quiere el fantasma malo?");
+            }
+            System.out.print("Fila: ");
+            fila=leer.nextInt()-1;
+            System.out.print("Columna: ");
+            columna=leer.nextInt()-1;
+            if((fila<4) || (columna==0 || columna==5 || tablero2[fila][columna].jugador.equals(jugador))){
+                System.out.println("Posicion invalida");
+                continue;
+            }
+            break;
+            }while(true);
+            if(i%2==1){
+            tablero2[fila][columna]=new Piezas(jugador,true);
+            }else{
+                tablero2[fila][columna]=new Piezas(jugador,false);
+            }
+            ImprimirTablero2();
+        }
+        
+        jugador="F2";
+        System.out.println("Jugador 2");
+        for(int i =1;i<=2;i++){
+            do{
+            if(i%2==1){
+                System.out.println("Donde quiere el fantasma bueno?");
+            }else{
+                System.out.println("Donde quiere el fantasma malo?");
+            }
+            System.out.print("Fila: ");
+            fila=leer.nextInt()-1;
+            System.out.print("Columna: ");
+            columna=leer.nextInt()-1;
+            if((fila>1) || (columna==0 || columna==5) || tablero2[fila][columna].jugador.equals(jugador)){
+                System.out.println("Posicion invalida");
+                continue;
+            }
+            break;
+            }while(true);
+            if(i%2==1){
+            tablero2[fila][columna]=new Piezas(jugador,true);
+            }else{
+                tablero2[fila][columna]=new Piezas(jugador,false);
+            }
+            ImprimirTablero2();
+        }
+        
+        for(int i=0;i<6;i++){
+            for(int j=0;i<6;i++){
+                if(tablero2[i][j]==null){
+                    tablero2[i][j]=new Piezas("[]",false);
+                }
+            }
+        }
+    }
+    
     static void Dificultad(){
         do{
             System.out.println("Elegir dificultad: NORMAL, EXPERT o GENIUS");

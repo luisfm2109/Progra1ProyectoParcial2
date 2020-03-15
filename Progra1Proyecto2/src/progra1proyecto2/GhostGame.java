@@ -15,6 +15,10 @@ public class GhostGame {
     static Piezas tablero2[][] = new Piezas[6][6];
     static String dificultad = "NORMAL";
     static String modojuego = "ALEATORIO";
+    static int fantasmasbuenos1=0;
+    static int fantasmasmalos1=0;
+    static int fantasmasbuenos2=0;
+    static int fantasmasmalos2=0;
     //Constructor
     public GhostGame (){
         jugadores = new Players [50];
@@ -95,10 +99,18 @@ public class GhostGame {
     }
     
     static void Jugar(String jugador1, String jugador2){
+        fantasmasbuenos1=0;
+        fantasmasmalos1=0;
+        fantasmasbuenos2=0;
+        fantasmasmalos2=0;
         TableroInicial();
         int turno=1;
+        
         String jugadoractual="";
         do{
+            CantidadFantasmas(jugador1,jugador2);
+            if(Ganador(jugador1, jugador2))
+                break;
             System.out.print("Turno de ");
             if(turno%2==1){
                 System.out.println(jugador1);
@@ -110,9 +122,77 @@ public class GhostGame {
             if(!ElegirPieza(jugadoractual))
                 continue;
             ImprimirTablero2();
+            
             turno++;
         }while(true);
     }
+    
+    static boolean Ganador(String jugador1, String jugador2){
+        String razonganar;
+        if(fantasmasbuenos2==0){
+            razonganar=jugador1+" triunfo sobre "+jugador2+" porque le comio todos los fantasmas buenos";
+            System.out.println(razonganar);
+            return true;
+        }
+        if(fantasmasmalos1==0){
+            razonganar=jugador1+" triunfo sobre "+jugador2+" porque le comio todos los fantasmas malos";
+            System.out.println(razonganar);
+            return true;
+        }
+        if((tablero2[0][0].jugador.equals("F1") && tablero2[0][0].fantasmabueno) || (tablero2[0][5].jugador.equals("F1") && tablero2[0][5].fantasmabueno)){
+            razonganar=jugador1+" triunfo sobre "+jugador2+" porque logro sacar del castillo un fantasma bueno";
+            System.out.println(razonganar);
+            return true;
+        }
+        
+        if(fantasmasbuenos1==0){
+            razonganar=jugador2+" triunfo sobre "+jugador1+" porque le comio todos los fantasmas buenos";
+            System.out.println(razonganar);
+            return true;
+        }
+        if(fantasmasmalos2==0){
+            razonganar=jugador2+" triunfo sobre "+jugador1+" porque le comio todos los fantasmas malos";
+            System.out.println(razonganar);
+            return true;
+        }
+        if((tablero2[5][0].jugador.equals("F2") && tablero2[5][0].fantasmabueno) || (tablero2[5][5].jugador.equals("F2") && tablero2[5][5].fantasmabueno)){
+            razonganar=jugador2+" triunfo sobre "+jugador1+" porque logro sacar del castillo un fantasma bueno";
+            System.out.println(razonganar);
+            return true;
+        }
+        return false;
+    }
+    
+    static void CantidadFantasmas(String jugador1, String jugador2){
+        fantasmasbuenos1=0;
+        fantasmasmalos1=0;
+        fantasmasbuenos2=0;
+        fantasmasmalos2=0;
+        
+        for(int i=0;i<6;i++){
+            for(int j=0;j<6;j++){
+                if(tablero2[i][j].jugador.equals("F1")){
+                    if(tablero2[i][j].fantasmabueno){
+                        fantasmasbuenos1++;
+                    }else{
+                        fantasmasmalos1++;
+                    }
+                }else if(tablero2[i][j].jugador.equals("F2")){
+                    if(tablero2[i][j].fantasmabueno){
+                        fantasmasbuenos2++;
+                    }else{
+                        fantasmasmalos2++;
+                    }
+                }
+                
+            }
+        }
+        
+        System.out.println(jugador1);
+        System.out.println("Fantasmas buenos: "+fantasmasbuenos1+"\tFantasmas malos: "+fantasmasmalos1);
+        System.out.println(jugador2);
+        System.out.println("Fantasmas buenos: "+fantasmasbuenos2+"\tFantasmas malos: "+fantasmasmalos2);
+    }   
     
     static boolean ElegirPieza(String jugadoractual){
         String jugador=jugadoractual;

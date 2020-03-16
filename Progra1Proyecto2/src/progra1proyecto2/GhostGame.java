@@ -4,21 +4,23 @@ package progra1proyecto2;
 import java.util.Scanner;
 
 /*
-    NOTA: SE UTILIZA LA VARIABLE "lea" PARA EL SCANNER
+    NOTA: SE UTILIZA LA VARIABLE "leer" PARA EL SCANNER
     */
 public class GhostGame {
       
     //Declarar variable
     static Scanner leer = new Scanner(System.in);
-    public Players jugadores[];
+    static public Players jugadores[];
     static String tablero[][] = new String[6][6];
     static Piezas tablero2[][] = new Piezas[6][6];
-    static String dificultad = "NORMAL";
-    static String modojuego = "ALEATORIO";
+    static int dificultad = 1;
+    static int modojuego = 1;
     static int fantasmasbuenos1=0;
     static int fantasmasmalos1=0;
     static int fantasmasbuenos2=0;
     static int fantasmasmalos2=0;
+    static String ultimosJuegos[]= new String [50];
+    
     //Constructor
     public GhostGame (){
         jugadores = new Players [50];
@@ -26,7 +28,7 @@ public class GhostGame {
     
    
     //Buscar usuario dentro de la colección de jugadores
-    public Players buscar (String username){
+    static public Players buscar (String username){
         for (Players jugadorF: jugadores) { //En caso de que ya exista dicho usuario en el arreglo de jugadores
             if ( jugadorF!=null && jugadorF.nombre.equalsIgnoreCase(username))
                 return jugadorF;    
@@ -87,7 +89,23 @@ public class GhostGame {
         }
         return null;
     }
-    
+    static void UltimosJuegos(String razonganar){
+        for (int juego=ultimosJuegos.length-1; juego>=0; juego--){
+            if (ultimosJuegos[juego]==null){
+                ultimosJuegos[juego]=razonganar;
+                break;
+            }
+        }
+    }
+    static void ImprimirJuegos(){
+        int contador=0;
+        for(int juego=0; juego<=ultimosJuegos.length-1; juego++){
+            if (ultimosJuegos[juego]!=null && contador<3){ //HAY QUE CAMBIARLO A 10 LUEGO
+                System.out.println(ultimosJuegos[juego]);
+                contador++;
+            }  
+        }
+    }
     //Ranking de jugadores
     public void RankingJugadores(){
         System.out.println("\nNombre\tContraseña\tPuntuación");
@@ -96,6 +114,9 @@ public class GhostGame {
                 System.out.println(jugadores[posicion].nombre + "\t\t" + jugadores[posicion].contrasenia + "\t" + jugadores[posicion].puntuacion);
             }
         }
+    }
+    public void LogOut(){
+        
     }
     
     static void Jugar(String jugador1, String jugador2){
@@ -132,32 +153,44 @@ public class GhostGame {
         if(fantasmasbuenos2==0){
             razonganar=jugador1+" triunfo sobre "+jugador2+" porque le comio todos los fantasmas buenos";
             System.out.println(razonganar);
+            UltimosJuegos(razonganar);
+            buscar(jugador1).puntuacion+=5;
             return true;
         }
         if(fantasmasmalos1==0){
             razonganar=jugador1+" triunfo sobre "+jugador2+" porque le comio todos los fantasmas malos";
             System.out.println(razonganar);
+            UltimosJuegos(razonganar);
+            buscar(jugador1).puntuacion+=5;
             return true;
         }
         if((tablero2[0][0].jugador.equals("F1") && tablero2[0][0].fantasmabueno) || (tablero2[0][5].jugador.equals("F1") && tablero2[0][5].fantasmabueno)){
             razonganar=jugador1+" triunfo sobre "+jugador2+" porque logro sacar del castillo un fantasma bueno";
             System.out.println(razonganar);
+            UltimosJuegos(razonganar);
+            buscar(jugador1).puntuacion+=5;
             return true;
         }
         
         if(fantasmasbuenos1==0){
             razonganar=jugador2+" triunfo sobre "+jugador1+" porque le comio todos los fantasmas buenos";
             System.out.println(razonganar);
+            UltimosJuegos(razonganar);
+            buscar(jugador2).puntuacion+=5;
             return true;
         }
         if(fantasmasmalos2==0){
             razonganar=jugador2+" triunfo sobre "+jugador1+" porque le comio todos los fantasmas malos";
             System.out.println(razonganar);
+            UltimosJuegos(razonganar);
+            buscar(jugador2).puntuacion+=5;
             return true;
         }
         if((tablero2[5][0].jugador.equals("F2") && tablero2[5][0].fantasmabueno) || (tablero2[5][5].jugador.equals("F2") && tablero2[5][5].fantasmabueno)){
             razonganar=jugador2+" triunfo sobre "+jugador1+" porque logro sacar del castillo un fantasma bueno";
             System.out.println(razonganar);
+            UltimosJuegos(razonganar);
+            buscar(jugador2).puntuacion+=5;
             return true;
         }
         return false;
@@ -285,9 +318,9 @@ public class GhostGame {
             }
         }
         ImprimirTablero();
-        if(dificultad.equals("NORMAL")){
+        if(dificultad==1){
             Normal();
-        }else if(dificultad.equals("EXPERT")){
+        }else if(dificultad==2){
             Expert();
         }else{
             Genius();
@@ -324,16 +357,16 @@ public class GhostGame {
         for(int i =1;i<=8;i++){
             do{
             if(i%2==1){
-                System.out.println("Donde quiere el fantasma bueno?");
+                System.out.println("¿Dónde quiere el fantasma bueno?");
             }else{
-                System.out.println("Donde quiere el fantasma malo?");
+                System.out.println("¿Dónde quiere el fantasma malo?");
             }
             System.out.print("Fila: ");
             fila=leer.nextInt()-1;
             System.out.print("Columna: ");
             columna=leer.nextInt()-1;
             if((fila<4) || (columna==0 || columna==5) || tablero2[fila][columna].jugador.equals(jugador)){
-                System.out.println("Posicion invalida");
+                System.out.println("Posicion inválida");
                 continue;
             }
             break;
@@ -353,16 +386,16 @@ public class GhostGame {
         for(int i =1;i<=8;i++){
             do{
             if(i%2==1){
-                System.out.println("Donde quiere el fantasma bueno?");
+                System.out.println("¿Dónde quiere el fantasma bueno?");
             }else{
-                System.out.println("Donde quiere el fantasma malo?");
+                System.out.println("¿Dónde quiere el fantasma malo?");
             }
             System.out.print("Fila: ");
             fila=leer.nextInt()-1;
             System.out.print("Columna: ");
             columna=leer.nextInt()-1;
             if((fila>1) || (columna==0 || columna==5) || tablero2[fila][columna].jugador.equals(jugador)){
-                System.out.println("Posicion invalida");
+                System.out.println("Posicion inválida");
                 continue;
             }
             break;
@@ -393,16 +426,16 @@ public class GhostGame {
         for(int i =1;i<=4;i++){
             do{
             if(i%2==1){
-                System.out.println("Donde quiere el fantasma bueno?");
+                System.out.println("¿Dónde quiere el fantasma bueno?");
             }else{
-                System.out.println("Donde quiere el fantasma malo?");
+                System.out.println("¿Dónde quiere el fantasma malo?");
             }
             System.out.print("Fila: ");
             fila=leer.nextInt()-1;
             System.out.print("Columna: ");
             columna=leer.nextInt()-1;
             if((fila<4) || (columna==0 || columna==5) || tablero2[fila][columna].jugador.equals(jugador)){
-                System.out.println("Posicion invalida");
+                System.out.println("Posicion inválida");
                 continue;
             }
             break;
@@ -420,16 +453,16 @@ public class GhostGame {
         for(int i =1;i<=4;i++){
             do{
             if(i%2==1){
-                System.out.println("Donde quiere el fantasma bueno?");
+                System.out.println("¿Dónde quiere el fantasma bueno?");
             }else{
-                System.out.println("Donde quiere el fantasma malo?");
+                System.out.println("¿Dónde quiere el fantasma malo?");
             }
             System.out.print("Fila: ");
             fila=leer.nextInt()-1;
             System.out.print("Columna: ");
             columna=leer.nextInt()-1;
             if((fila>1) || (columna==0 || columna==5) || tablero2[fila][columna].jugador.equals(jugador)){
-                System.out.println("Posicion invalida");
+                System.out.println("Posicion inválida");
                 continue;
             }
             break;
@@ -459,16 +492,16 @@ public class GhostGame {
         for(int i =1;i<=2;i++){
             do{
             if(i%2==1){
-                System.out.println("Donde quiere el fantasma bueno?");
+                System.out.println("¿Dónde quiere el fantasma bueno?");
             }else{
-                System.out.println("Donde quiere el fantasma malo?");
+                System.out.println("¿Dónde quiere el fantasma malo?");
             }
             System.out.print("Fila: ");
             fila=leer.nextInt()-1;
             System.out.print("Columna: ");
             columna=leer.nextInt()-1;
             if((fila<4) || (columna==0 || columna==5 || tablero2[fila][columna].jugador.equals(jugador))){
-                System.out.println("Posicion invalida");
+                System.out.println("Posicion inválida");
                 continue;
             }
             break;
@@ -486,16 +519,16 @@ public class GhostGame {
         for(int i =1;i<=2;i++){
             do{
             if(i%2==1){
-                System.out.println("Donde quiere el fantasma bueno?");
+                System.out.println("¿Dónde quiere el fantasma bueno?");
             }else{
-                System.out.println("Donde quiere el fantasma malo?");
+                System.out.println("¿Dónde quiere el fantasma malo?");
             }
             System.out.print("Fila: ");
             fila=leer.nextInt()-1;
             System.out.print("Columna: ");
             columna=leer.nextInt()-1;
             if((fila>1) || (columna==0 || columna==5) || tablero2[fila][columna].jugador.equals(jugador)){
-                System.out.println("Posicion invalida");
+                System.out.println("Posicion inválida");
                 continue;
             }
             break;
@@ -519,42 +552,25 @@ public class GhostGame {
     
     static void Dificultad(){
         do{
-            System.out.println("Elegir dificultad: NORMAL, EXPERT o GENIUS");
-            dificultad = leer.next().toUpperCase();
+            System.out.print("Elegir dificultad:\t1. NORMAL\t2. EXPERT\t3. GENIUS\nIngrese opción: ");
+            dificultad = leer.nextInt();
             
-                if(!dificultad.equals("NORMAL")&&!dificultad.equals("EXPERT")&&!dificultad.equals("GENIUS")){
-                    System.out.println("Dificultad invalida");
-                        }
-        }while(!dificultad.equals("NORMAL")&&!dificultad.equals("EXPERT")&&!dificultad.equals("GENIUS"));
+                if(dificultad!=1 && dificultad!=2 && dificultad!=3){
+                    System.out.println("Dificultad inválida");
+                }
+        }while(dificultad!=1 && dificultad!=2 && dificultad!=3);
         
     }
     
     static void MododeJuego(){
         do{
-            System.out.println("Elegir modo de juego: ALEATORIO o MANUAL");
-            modojuego = leer.next().toUpperCase();
+            System.out.println("Elegir modo de juego:\t1. ALEATORIO\t2. MANUAL");
+            modojuego = leer.nextInt();
             
-                if(!dificultad.equals("ALEATORIO")&&!dificultad.equals("MANUAL")){
+                if(modojuego!=1 && modojuego!=2){
                     System.out.println("Modo de juego invalido");
                         }
-        }while(!dificultad.equals("ALEATORIO")&&!dificultad.equals("MANUAL"));
+        }while(modojuego!=1 && modojuego!=2);
     }
     
-    static void Configuracion(){
-        char opcionconfig;
-        
-        do{
-            System.out.println("a. Dificultad\nb. Modo de juego\nc. Volver al menu principal");
-            opcionconfig= leer.next().toLowerCase().charAt(0);
-            
-            switch(opcionconfig){
-               case 'a': Dificultad();
-                   break;
-               case 'b': MododeJuego();
-                   break;
-               case 'c':break;
-               default: System.out.println("Opcion no valida");
-           }
-       }while(opcionconfig!='c');
-    }
 }

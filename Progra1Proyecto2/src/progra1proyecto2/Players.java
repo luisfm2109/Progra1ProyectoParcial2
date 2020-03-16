@@ -13,14 +13,14 @@ public class Players {
     String nombre, contrasenia;
     int puntuacion;
     
-    String puntuacionA[];
+    
     
     //Constructor
     public Players(String nombre, String contrasenia){
         this.nombre = nombre;
         this.contrasenia = contrasenia;
         puntuacion=0;
-        puntuacionA= new String [10];
+        
     }
     
     public void setNombre(String nombre){
@@ -31,13 +31,7 @@ public class Players {
         this.contrasenia = contrasenia;
     }
     
-    public String getNombre(String nombre){
-        return this.nombre;
-    }
-    public String getContrasenia(String contrasenia){
-        return this.contrasenia;
-    }
-    
+   
    
     //Imprimir
     /*public static void Imprimir(){

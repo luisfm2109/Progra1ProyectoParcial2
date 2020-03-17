@@ -66,8 +66,10 @@ public class GhostGame {
     public void eliminarPlayer(String username){
         for (int posicion=0; posicion<jugadores.length;posicion++){
             if (jugadores[posicion]!=null && jugadores[posicion].nombre==username){
-                jugadores[posicion].nombre="";
+                jugadores[posicion]=null;
+                /*jugadores[posicion].nombre="";
                 jugadores[posicion].contrasenia="";
+                jugadores[posicion].puntuacion=0;*/
             }
         }
     }
@@ -98,8 +100,8 @@ public class GhostGame {
         }
     }
     static void ImprimirJuegos(String jugador1){
-        int contador=0; //buscar(jugador1).ultimosJuegos.length-1
-        for(int juego=0; juego<=49; juego++){
+        int contador=0; 
+        for(int juego=0; juego<=buscar(jugador1).ultimosJuegos.length-1; juego++){
             if (buscar(jugador1).ultimosJuegos[juego]!=null && contador<10){ 
                 System.out.println(buscar(jugador1).ultimosJuegos[juego]);
                 contador++;
@@ -111,7 +113,7 @@ public class GhostGame {
         Players temporalJugador = new Players(nombre, contrasenia);
         for(int x=0; x<jugadores.length; x++){//En la parte de x<emp, emp es el tamaño del arreglo igual en y<emp
                      for(int y=1; y<jugadores.length;y++){
-                         if(jugadores[y-1]!=null && jugadores[y-1].puntuacion<jugadores[y].puntuacion){//Si queres que te los presente de menor a mayor solo le das vuelta al signo < por >
+                         if(jugadores[y-1]!=null && jugadores[y]!=null && jugadores[y-1].puntuacion<jugadores[y].puntuacion){//Si queres que te los presente de menor a mayor solo le das vuelta al signo < por >
                              temporalJugador = jugadores[y-1];
                              jugadores[y-1]= jugadores[y];
                              jugadores[y]=temporalJugador;
@@ -121,17 +123,15 @@ public class GhostGame {
     }
     //Ranking de jugadores
     public void RankingJugadores(){
-        System.out.println("\nNombre\tContraseña\tPuntuación");
+        //String rankingJugador1= buscar(jugador1).ranking;
+        System.out.println("\nNombre\t\tPuntuación");
         for (int posicion=0; posicion<jugadores.length; posicion++){
             if (jugadores[posicion]!=null){
-                System.out.println(jugadores[posicion].nombre + "\t\t" + jugadores[posicion].contrasenia + "\t" + jugadores[posicion].puntuacion);
+                System.out.println(jugadores[posicion].nombre + "\t\t" + jugadores[posicion].puntuacion);
             }
         }
     }
-    public void LogOut(){
-        
-    }
-    
+  
     static void Jugar(String jugador1, String jugador2){
         fantasmasbuenos1=0;
         fantasmasmalos1=0;

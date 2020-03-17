@@ -13,7 +13,7 @@ public class Players {
     String nombre, contrasenia;
     int puntuacion;
     String ultimosJuegos[];
-    
+    String ranking;
     
     //Constructor
     public Players(String nombre, String contrasenia){

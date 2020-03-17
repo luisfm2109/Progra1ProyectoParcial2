@@ -12,7 +12,7 @@ public class Players {
     //Atributos que tiene la clase player
     String nombre, contrasenia;
     int puntuacion;
-    
+    String ultimosJuegos[];
     
     
     //Constructor
@@ -20,7 +20,7 @@ public class Players {
         this.nombre = nombre;
         this.contrasenia = contrasenia;
         puntuacion=0;
-        
+        ultimosJuegos= new String [50];
     }
     
     public void setNombre(String nombre){

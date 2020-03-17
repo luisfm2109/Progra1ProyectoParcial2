@@ -19,7 +19,7 @@ public class GhostGame {
     static int fantasmasmalos1=0;
     static int fantasmasbuenos2=0;
     static int fantasmasmalos2=0;
-    static String ultimosJuegos[]= new String [50];
+    //static String ultimosJuegos[]= new String [50];
     
     //Constructor
     public GhostGame (){
@@ -89,22 +89,35 @@ public class GhostGame {
         }
         return null;
     }
-    static void UltimosJuegos(String razonganar){
-        for (int juego=ultimosJuegos.length-1; juego>=0; juego--){
-            if (ultimosJuegos[juego]==null){
-                ultimosJuegos[juego]=razonganar;
+    static void UltimosJuegos(String jugador1, String razonganar){
+        for (int juego=buscar(jugador1).ultimosJuegos.length-1; juego>=0; juego--){
+            if (buscar(jugador1).ultimosJuegos[juego]==null){
+                buscar(jugador1).ultimosJuegos[juego]=razonganar;
                 break;
             }
         }
     }
-    static void ImprimirJuegos(){
-        int contador=0;
-        for(int juego=0; juego<=ultimosJuegos.length-1; juego++){
-            if (ultimosJuegos[juego]!=null && contador<3){ //HAY QUE CAMBIARLO A 10 LUEGO
-                System.out.println(ultimosJuegos[juego]);
+    static void ImprimirJuegos(String jugador1){
+        int contador=0; //buscar(jugador1).ultimosJuegos.length-1
+        for(int juego=0; juego<=49; juego++){
+            if (buscar(jugador1).ultimosJuegos[juego]!=null && contador<10){ 
+                System.out.println(buscar(jugador1).ultimosJuegos[juego]);
                 contador++;
             }  
         }
+    }
+    
+    static void OrdenarRanking(String nombre, String contrasenia){
+        Players temporalJugador = new Players(nombre, contrasenia);
+        for(int x=0; x<jugadores.length; x++){//En la parte de x<emp, emp es el tamaño del arreglo igual en y<emp
+                     for(int y=1; y<jugadores.length;y++){
+                         if(jugadores[y-1]!=null && jugadores[y-1].puntuacion<jugadores[y].puntuacion){//Si queres que te los presente de menor a mayor solo le das vuelta al signo < por >
+                             temporalJugador = jugadores[y-1];
+                             jugadores[y-1]= jugadores[y];
+                             jugadores[y]=temporalJugador;
+                         }
+                     }  
+                 }  
     }
     //Ranking de jugadores
     public void RankingJugadores(){
@@ -153,44 +166,44 @@ public class GhostGame {
         if(fantasmasbuenos2==0){
             razonganar=jugador1+" triunfo sobre "+jugador2+" porque le comio todos los fantasmas buenos";
             System.out.println(razonganar);
-            UltimosJuegos(razonganar);
-            buscar(jugador1).puntuacion+=5;
+            UltimosJuegos(jugador1, razonganar);
+            buscar(jugador1).puntuacion+=3;
             return true;
         }
         if(fantasmasmalos1==0){
             razonganar=jugador1+" triunfo sobre "+jugador2+" porque le comio todos los fantasmas malos";
             System.out.println(razonganar);
-            UltimosJuegos(razonganar);
-            buscar(jugador1).puntuacion+=5;
+            UltimosJuegos(jugador1, razonganar);
+            buscar(jugador1).puntuacion+=3;
             return true;
         }
         if((tablero2[0][0].jugador.equals("F1") && tablero2[0][0].fantasmabueno) || (tablero2[0][5].jugador.equals("F1") && tablero2[0][5].fantasmabueno)){
             razonganar=jugador1+" triunfo sobre "+jugador2+" porque logro sacar del castillo un fantasma bueno";
             System.out.println(razonganar);
-            UltimosJuegos(razonganar);
-            buscar(jugador1).puntuacion+=5;
+            UltimosJuegos(jugador1 , razonganar);
+            buscar(jugador1).puntuacion+=3;
             return true;
         }
         
         if(fantasmasbuenos1==0){
             razonganar=jugador2+" triunfo sobre "+jugador1+" porque le comio todos los fantasmas buenos";
             System.out.println(razonganar);
-            UltimosJuegos(razonganar);
-            buscar(jugador2).puntuacion+=5;
+            UltimosJuegos(jugador1, razonganar);
+            buscar(jugador2).puntuacion+=3;
             return true;
         }
         if(fantasmasmalos2==0){
             razonganar=jugador2+" triunfo sobre "+jugador1+" porque le comio todos los fantasmas malos";
             System.out.println(razonganar);
-            UltimosJuegos(razonganar);
-            buscar(jugador2).puntuacion+=5;
+            UltimosJuegos(jugador1, razonganar);
+            buscar(jugador2).puntuacion+=3;
             return true;
         }
         if((tablero2[5][0].jugador.equals("F2") && tablero2[5][0].fantasmabueno) || (tablero2[5][5].jugador.equals("F2") && tablero2[5][5].fantasmabueno)){
             razonganar=jugador2+" triunfo sobre "+jugador1+" porque logro sacar del castillo un fantasma bueno";
             System.out.println(razonganar);
-            UltimosJuegos(razonganar);
-            buscar(jugador2).puntuacion+=5;
+            UltimosJuegos(jugador1, razonganar);
+            buscar(jugador2).puntuacion+=3;
             return true;
         }
         return false;

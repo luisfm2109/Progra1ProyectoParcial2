@@ -5,7 +5,14 @@ import javax.swing.JOptionPane;
 
 public class Progra1Proyecto2 {
 static Scanner leer = new Scanner(System.in);
-    
+    /*FALTA CAMBIAR
+Hacer que la función ultimos juegos sea de players, porque varía dependiendo del jugador que
+está log in.
+Que el usuario se actualice en los últimos juegos.
+Colocar el ranking en orden de puntaje, con arreglo búrbuja
+Cambiar el puntaje a 3pts.
+Borrar el usuario del ranking al eliminarlo
+*/
     //Instanciando la clase GhostGame
     static GhostGame juego=new GhostGame();
     //static String nombre="", contrasenia="";
@@ -61,11 +68,14 @@ static Scanner leer = new Scanner(System.in);
                     switch (submenu3){
                         case 'A':
                             System.out.println("\n***Descripción de mis últimos 10 juegos***");
-                            juego.ImprimirJuegos();
+                            //String nombreJugador1;
+                            //nombreJugador1 = jugador1.toString();
+                            juego.ImprimirJuegos(jugador1.nombre);
                         break;
                         case 'B':
                             System.out.println("\n***Ranking de jugadores");
-                            //Cuando el jugador gana la puntuación se le aumenta 5pts.
+                            //Cuando el jugador gana la puntuación se le aumenta 3pts.
+                            juego.OrdenarRanking(jugador1.nombre,jugador1.contrasenia);
                             juego.RankingJugadores();
                         break;
                         case 'C':

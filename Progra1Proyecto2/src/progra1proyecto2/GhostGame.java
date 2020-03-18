@@ -4,7 +4,7 @@ package progra1proyecto2;
 import java.util.Scanner;
 import java.util.Random;
 
-/*
+    /*
     NOTA: SE UTILIZA LA VARIABLE "leer" PARA EL SCANNER
     */
 public class GhostGame {
@@ -22,7 +22,6 @@ public class GhostGame {
     static int fantasmasmalos2=0;
     static boolean jugador1retirado=false;
     static boolean jugador2retirado=false;
-    //static String ultimosJuegos[]= new String [50];
     
     //Constructor
     public GhostGame (){
@@ -34,13 +33,13 @@ public class GhostGame {
     static public Players buscar (String username){
         for (Players jugadorF: jugadores) { //En caso de que ya exista dicho usuario en el arreglo de jugadores
             if ( jugadorF!=null && jugadorF.nombre.equalsIgnoreCase(username))
-                return jugadorF;    
+                return jugadorF;    //Devuelve al jugador encontrado
         }
         //En caso de que no esté dentro de la colección de jugadores
         return null;
     }
     
-    //Buscar contraseña dentro de la colección de jugadores
+    //Buscar contraseña compatiple con el usuario dentro de la colección de jugadores
     public boolean buscar2 (String username, String contrasenia){
         for (int posicion=0; posicion<jugadores.length; posicion++) { //En caso de que ya exista dicho usuario en el arreglo de jugadores
             if ( jugadores[posicion]!=null && jugadores[posicion].nombre.equalsIgnoreCase(username) && jugadores[posicion].contrasenia.equalsIgnoreCase(contrasenia))
@@ -50,12 +49,12 @@ public class GhostGame {
         return false;
     }
     
-    //Crear un usuario a la colección de jugadores
+    //Crear un usuario a la colección de jugadores que tiene como parámetros un nombre y contraseña
     public boolean crearPlayer(String username, String password){
-        
+        //Se utiliza la función buscar para validar que el usuario sea único
         if (buscar(username)==null){
             for (int posicion=0; posicion< jugadores.length; posicion++){
-                if (jugadores[posicion]==null){ //En caso de que el usuario no exista
+                if (jugadores[posicion]==null){ //Para almacenar el usuario enun espacio vacío del arreglo
                     jugadores[posicion] = new Players (username, password); //Se crea el usuario dentro del arreglo
                     return true;
                 }
@@ -66,34 +65,17 @@ public class GhostGame {
         return false;
     }
     
+    //Para eliminar el jugador que está log-in
     public void eliminarPlayer(String username){
         for (int posicion=0; posicion<jugadores.length;posicion++){
             if (jugadores[posicion]!=null && jugadores[posicion].nombre==username){
-                jugadores[posicion]=null;
-                /*jugadores[posicion].nombre="";
-                jugadores[posicion].contrasenia="";
-                jugadores[posicion].puntuacion=0;*/
+                //Se asigna vacío los valores en la posición del arreglo donde se encontraba el jugador
+                jugadores[posicion]=null; 
             }
         }
     }
     
-    //Jugador 1
-    public String jugador1 (String username){
-        for (Players jugadorF: jugadores){
-            if (jugadorF!=null && jugadorF.nombre.equalsIgnoreCase(username))
-                return jugadorF.nombre;
-        }
-        return null;
-    }
-    
-    //Jugador 2
-    public String jugador2 (String username){
-        for (Players jugadorF: jugadores){
-            if (jugadorF!=null && jugadorF.nombre.equalsIgnoreCase(username))
-                return jugadorF.nombre;
-        }
-        return null;
-    }
+   //Para REPORTES, función para almacenar en un arreglo la razón por la que ganó un jugador
     static void UltimosJuegos(String jugador1, String razonganar){
         for (int juego=buscar(jugador1).ultimosJuegos.length-1; juego>=0; juego--){
             if (buscar(jugador1).ultimosJuegos[juego]==null){
@@ -102,6 +84,8 @@ public class GhostGame {
             }
         }
     }
+    
+    //Para REPORTES, función que imprime el resultado de los juegos a medida se van ganando
     static void ImprimirJuegos(String jugador1){
         int contador=0; 
         for(int juego=0; juego<=buscar(jugador1).ultimosJuegos.length-1; juego++){
@@ -112,21 +96,22 @@ public class GhostGame {
         }
     }
     
+    //Para REPORTES, función para ordenar el ranking de los jugadores, del que mayor puntuación tiene, al menor
     static void OrdenarRanking(String nombre, String contrasenia){
+        //objeto que se usará para comparar
         Players temporalJugador = new Players(nombre, contrasenia);
-        for(int x=0; x<jugadores.length; x++){//En la parte de x<emp, emp es el tamaño del arreglo igual en y<emp
-                     for(int y=1; y<jugadores.length;y++){
-                         if(jugadores[y-1]!=null && jugadores[y]!=null && jugadores[y-1].puntuacion<jugadores[y].puntuacion){//Si queres que te los presente de menor a mayor solo le das vuelta al signo < por >
-                             temporalJugador = jugadores[y-1];
-                             jugadores[y-1]= jugadores[y];
-                             jugadores[y]=temporalJugador;
-                         }
-                     }  
-                 }  
+        for(int x=0; x<jugadores.length; x++){
+            for(int y=1; y<jugadores.length;y++){
+                if(jugadores[y-1]!=null && jugadores[y]!=null && jugadores[y-1].puntuacion<jugadores[y].puntuacion){
+                    temporalJugador = jugadores[y-1];
+                    jugadores[y-1]= jugadores[y];
+                    jugadores[y]=temporalJugador;
+                }
+            }  
+        }  
     }
-    //Ranking de jugadores
+    //Para REPORTES, función para imprimir el Ranking de jugadores, se muestra su nombre y puntuación
     public void RankingJugadores(){
-        //String rankingJugador1= buscar(jugador1).ranking;
         System.out.println("\nNombre\t\tPuntuación");
         for (int posicion=0; posicion<jugadores.length; posicion++){
             if (jugadores[posicion]!=null){

@@ -144,7 +144,7 @@ public class GhostGame {
                 jugadoractual="F2";
             }
             
-            if(!ElegirPieza(jugadoractual)){
+            if(!ElegirPieza(jugadoractual,jugador1,jugador2)){
                 continue;
             }
             
@@ -250,7 +250,7 @@ public class GhostGame {
         System.out.println("Fantasmas buenos: "+fantasmasbuenos2+"\tFantasmas malos: "+fantasmasmalos2);
     }   
     
-    static boolean ElegirPieza(String jugadoractual){
+    static boolean ElegirPieza(String jugadoractual, String jugador1, String jugador2){
         String jugador=jugadoractual;
         int fila;
         int columna;
@@ -300,10 +300,10 @@ public class GhostGame {
        
         }while(!tablero2[fila][columna].jugador.equals(jugador));
         
-        return MoverPieza(jugador,fila,columna);
+        return MoverPieza(jugador,fila,columna,jugador1,jugador2);
     }
     
-    static boolean MoverPieza(String jugadoractual, int filapieza, int columnapieza){
+    static boolean MoverPieza(String jugadoractual, int filapieza, int columnapieza, String jugador1, String jugador2){
         String jugador=jugadoractual;
         int fila;
         int columna;
@@ -339,11 +339,18 @@ public class GhostGame {
             }
             break;
         }while(true);
+        String jugadorcontrario;
+        
+        if(jugadoractual.equals("F1")){
+            jugadorcontrario=jugador1;
+        }else{
+            jugadorcontrario=jugador2;
+        }
         if(!tablero2[fila][columna].jugador.equals("[]")){
             if(tablero2[fila][columna].fantasmabueno){
-            System.out.println("TE HAS COMIDO UN FANTASMA BUENO DEL JUGADOR CONTRARIO");
+            System.out.println("TE HAS COMIDO UN FANTASMA BUENO DE "+jugadorcontrario);
             }else{
-                System.out.println("TE HAS COMIDO UN FANTASMA MALO DEL JUGADOR CONTRARIO");
+                System.out.println("TE HAS COMIDO UN FANTASMA MALO DE "+jugadorcontrario);
             }
         }
         tablero2[fila][columna].jugador= tablero2[filapieza][columnapieza].jugador;

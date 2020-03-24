@@ -119,8 +119,9 @@ public class GhostGame {
             }
         }
     }
-  
+  //Este metodo decide el orden de los turnos y la logica del juego
     static void Jugar(String jugador1, String jugador2){
+        //se inicia con la cantidad de fantasmas en cero y tablero incial se decide con los settings
         fantasmasbuenos1=0;
         fantasmasmalos1=0;
         fantasmasbuenos2=0;
@@ -325,8 +326,16 @@ public class GhostGame {
                 }
             }while(columna<0 || columna>5 || columna>columnapieza+1 || columna<columnapieza-1);
             
-            if(tablero2[fila][columna].jugador.equals(jugador) || (fila==0 && columna==0 && tablero2[fila][columna].jugador.equals("F2")) || (fila==0 && columna==5 && tablero2[fila][columna].jugador.equals("F2")) || (fila==5 && columna==0 && tablero2[fila][columna].jugador.equals("F1")) || (fila==5 && columna==5 && tablero2[fila][columna].jugador.equals("F1")) || (fila!=filapieza && columna!=columnapieza)){
-                System.out.println("Movimiento invalido");
+            if(tablero2[fila][columna].jugador.equals(jugador) || (fila==0 && columna==0 && (jugadoractual.equals("F2") || !tablero2[filapieza][columnapieza].fantasmabueno)) || (fila==0 && columna==5 && (jugadoractual.equals("F2") || !tablero2[filapieza][columnapieza].fantasmabueno)) || (fila==5 && columna==0 && (jugadoractual.equals("F1") || !tablero2[filapieza][columnapieza].fantasmabueno)) || (fila==5 && columna==5 && (jugadoractual.equals("F1") || !tablero2[filapieza][columnapieza].fantasmabueno)) || (fila!=filapieza && columna!=columnapieza)){
+                
+                if(((fila==0 && columna==0) || (fila==0 && columna==5)) && !tablero2[filapieza][columnapieza].fantasmabueno && tablero2[filapieza][columnapieza].jugador.equals("F1")){
+                    System.out.println("Fantasma malo no puede salir del castillo");
+                }else if(((fila==5 && columna==0) || (fila==5 && columna==5)) && !tablero2[filapieza][columnapieza].fantasmabueno && tablero2[filapieza][columnapieza].jugador.equals("F2")){
+                    System.out.println("Fantasma malo no puede salir del castillo");
+                }else{
+                    System.out.println("Movimiento invalido");
+                }
+                
                 do{
                 System.out.println("1. Ingresar otra cooordenada de movimiento\n2. Seleccionar otro fantasma");
                 int seleccion = leer.nextInt();
